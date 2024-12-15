@@ -21,10 +21,15 @@ connectDB((err) => {
 
 // Get all data
 app.get('/books', (req, res) => {
+    let pageNo = req.query.pageNo || 0;
+    let pageSize = 3;
     let booksList = [];
+
     db.collection('books')
       .find()
       .sort({ title: 1 })
+      .skip(pageNo*pageSize)
+      .limit(pageSize)
       .forEach(book => {
         booksList.push(book);
       })
